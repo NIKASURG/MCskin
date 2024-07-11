@@ -148,7 +148,7 @@ window.addEventListener('keydown', (event) => {
 // Animacijos funkcija
 function animate() {
     requestAnimationFrame(animate);
-    // head.rotation.y += 0.1
+    head.rotation.y += 0.1
     // body.rotation.y += 0.1
     // larm.rotation.y += 0.1
     // larm.rotation.x += 0.1
