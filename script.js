@@ -8,7 +8,9 @@ const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerH
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+const kunas = new THREE.Group();
 window.addEventListener('click', onMouseClick, false);
+judink = true;
 function onMouseClick(event) {
     // Konvertuojame pelės poziciją į normuotas prietaisų koordinates
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -18,19 +20,25 @@ function onMouseClick(event) {
     raycaster.setFromCamera(mouse, camera);
 
     // Pasiimame objektus su kuriais susikerta spindulys
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(kunas.children);
 
     if (intersects.length > 0) {
-        // Susikertama su pirmu objektu
+        judink = false
         const intersect = intersects[0];
-        console.log(intersects.length);
-        console.log('Paspaudimo koordinatės objekto atžvilgiu:', intersect.point);
         console.log('Paspaustas objektas:', intersect.object);
-
-
+        console.log('Paspaudimo koordinatės objekto atžvilgiu:', intersect.point);
+        // Pridedame mažą kvadratėlį
+        const squareGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const squareMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+        const square = new THREE.Mesh(squareGeometry, squareMaterial);
+        square.position.copy(intersect.point);
+        kunas.add(square);
+    } else {
+        console.log('Nepaspausta ant objekto');
+        judink = true
     }
 }
-const kunas = new THREE.Group();
+
 
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -170,10 +178,11 @@ window.addEventListener('mousemove', (event) => {
         prevMouseY = event.clientY;
         const angleY = deltaY * 0.005; // Kintamasis, kad pasukti kampą pagal judesį
 
-        // Sukame kamerą aplink X ašį
-        kunas.rotation.x += angleY * 5;
-        kunas.rotation.y += angleX * 5;
-
+        if (judink) {
+            // Sukame kamerą aplink X ašį
+            kunas.rotation.x += angleY * 5;
+            kunas.rotation.y += angleX * 5;
+        }
 
 
 
