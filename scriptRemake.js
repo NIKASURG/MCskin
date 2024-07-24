@@ -12,8 +12,8 @@ window.onload = function () {// Inicijuojame sceną, kamerą ir renderer'į
     function gautiPavInfo(nuoroda) {
         const img = new Image();
         img.src = nuoroda;
-        context.drawImage(img, 0, 0);
-        const taskas = context.getImageData(1, 1, 1, 1).data;
+        context.drawImage(img, 0, 0, 64, 64);
+        const taskas = context.getImageData(10, 20, 1, 1).data;
         console.log(taskas)
         const red = taskas[0];
         const green = taskas[1];
@@ -67,7 +67,7 @@ window.onload = function () {// Inicijuojame sceną, kamerą ir renderer'į
             const y = Math.floor((1 - uv.y) * canvas.height);
 
             // Nupiešiame mažą kvadratėlį ant Canvas
-            context.fillStyle = '#ff0000'
+            context.fillStyle = gautiPavInfo('TRADERURG.png');
             console.log(x, y);
             const xP = Math.round(x / 8) * 8
             const yP = Math.round(y / 8) * 8
@@ -101,7 +101,7 @@ window.onload = function () {// Inicijuojame sceną, kamerą ir renderer'į
     }
 
     // Sukuriame objektus
-    const medziaga = new THREE.MeshBasicMaterial({ map: texture });
+    const medziaga = new THREE.MeshBasicMaterial({ color: gautiPavInfo('TRADERURG.png') });
     const size = {
         head: {
             w: pixel * 8,
